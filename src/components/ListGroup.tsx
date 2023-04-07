@@ -1,42 +1,34 @@
 import { useState } from "react";
 
-function ListGroup() {
-  let states = ["Maharashtra", "Delhi", "UP", "MP", "Goa"];
+interface Props {
+  items: string[];
+  heading: string;
+  onSelectItem: (item: string) => void;
+}
 
-  // Using Constant value
-  let checkIfStateEmptyMessage =
-    states.length === 0 ? <p>No State found.</p> : null;
-
-  // Using function
-  function checkIfStateEmptyMessageFunction() {
-    return states.length === 0 ? <p>No State found.</p> : "";
-  }
-
+function ListGroup({ items, heading, onSelectItem }: Props) {
   let [selectedIndex, setSelectedIndex] = useState(-1);
 
-  const handleSelectedState = (index: number) => {
-    setSelectedIndex(index);
-  };
   return (
     <>
-      <h1>List</h1>
-      {/* {checkIfStateEmptyMessage} */}
-      {/* Following is much concise approach for conditional rendering. */}
-      {states.length == 0 && <p>No State found.</p>}
+      <h1>{heading}</h1>
+
+      {items.length == 0 && <p>No {heading} found.</p>}
       <ul className="list-group">
-        {states.map((state, index) => (
+        {items.map((item, index) => (
           <li
-            key={state}
+            key={item}
             className={
               selectedIndex === index
                 ? "list-group-item active"
                 : "list-group-item"
             }
             onClick={() => {
-              handleSelectedState(index);
+              setSelectedIndex(index);
+              onSelectItem(item);
             }}
           >
-            {state}
+            {item}
           </li>
         ))}
       </ul>
