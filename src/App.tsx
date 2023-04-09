@@ -7,6 +7,7 @@ import ReactState from "./components/ReactState";
 import UpdateState from "./components/UpdateStates";
 import UpdateArray from "./components/UpdateArray";
 import UpdateArrayOfObject from "./components/UpdateArrayOfObjects";
+import UpdateArrayOfObjectWithImmer from "./components/UpdateArrayOfObjectWithImmer";
 
 function App() {
   let states = ["Maharashtra", "Delhi", "UP", "MP", "Goa"];
@@ -43,6 +44,7 @@ function App() {
       <UpdateState />
       <UpdateArray />
       <UpdateArrayOfObject />
+      <UpdateArrayOfObjectWithImmer />
     </>
   );
 }
