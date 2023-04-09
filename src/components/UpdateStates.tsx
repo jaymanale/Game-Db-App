@@ -6,6 +6,22 @@ const UpdateState = () => {
     price: 10,
   });
 
+  const [deeplyNestedProperty, setDeeplyNestedProperty] = useState({
+    name: "jay",
+    address: {
+      city: "Pune",
+      pincode: 123456,
+    },
+  });
+
+  const handleDeeplyNested = () => {
+    setDeeplyNestedProperty({
+      ...deeplyNestedProperty,
+      address: { ...deeplyNestedProperty.address, pincode: 678954 },
+    });
+    console.log(deeplyNestedProperty);
+  };
+
   const handleClick = () => {
     console.log(fruit);
     // const update = {
@@ -18,7 +34,11 @@ const UpdateState = () => {
   };
   return (
     <div>
-      <button onClick={handleClick}>click me</button>
+      <button onClick={handleClick}>object property update</button>
+
+      <button onClick={handleDeeplyNested}>
+        Deeply nested property update
+      </button>
     </div>
   );
 };
