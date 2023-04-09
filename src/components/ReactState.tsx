@@ -22,7 +22,7 @@ const ReactState = () => {
   const handleClick = () => {
     setVisible(true);
     console.log(isVisible); // false - Update did not applied immediately
-  }; // rnd of updates
+  }; // end of updates
   return (
     <div>
       <button onClick={handleClick}>React State Button click me</button>

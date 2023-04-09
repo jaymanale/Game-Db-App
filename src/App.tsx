@@ -4,6 +4,7 @@ import Button from "./components/Button";
 import ListGroup from "./components/ListGroup";
 import Like from "./components/Like";
 import ReactState from "./components/ReactState";
+import UpdateState from "./components/UpdateStates";
 
 function App() {
   let states = ["Maharashtra", "Delhi", "UP", "MP", "Goa"];
@@ -37,6 +38,7 @@ function App() {
       <Button onButtonClick={handleHideAlert} heading="Click Me" />
       <Like initialState={false} onLikeClick={() => console.log("Clicked")} />
       <ReactState />
+      <UpdateState />
     </>
   );
 }
