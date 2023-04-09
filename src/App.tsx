@@ -5,6 +5,7 @@ import ListGroup from "./components/ListGroup";
 import Like from "./components/Like";
 import ReactState from "./components/ReactState";
 import UpdateState from "./components/UpdateStates";
+import UpdateArray from "./components/UpdateArray";
 
 function App() {
   let states = ["Maharashtra", "Delhi", "UP", "MP", "Goa"];
@@ -39,6 +40,7 @@ function App() {
       <Like initialState={false} onLikeClick={() => console.log("Clicked")} />
       <ReactState />
       <UpdateState />
+      <UpdateArray />
     </>
   );
 }
