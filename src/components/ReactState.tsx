@@ -10,6 +10,14 @@ const ReactState = () => {
   // React takes all of the updates , patched them and applied to them later time after handleClick completes
   // AT that time react applies all the updates at once and re-render the component once
   const [isVisible, setVisible] = useState(false);
+  //   const [firstName, setFirstName] = useState("");
+  //   const [lastName, setLastName] = useState("");
+
+  // Common State combine in one use state
+  const [person, setPerson] = useState({
+    firstName: "",
+    lastName: "",
+  });
 
   const handleClick = () => {
     setVisible(true);
