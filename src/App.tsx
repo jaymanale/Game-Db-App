@@ -8,9 +8,12 @@ import UpdateState from "./components/UpdateStates";
 import UpdateArray from "./components/UpdateArray";
 import UpdateArrayOfObject from "./components/UpdateArrayOfObjects";
 import UpdateArrayOfObjectWithImmer from "./components/UpdateArrayOfObjectWithImmer";
+import NavBar from "./components/NavBar";
+import Cart from "./components/Cart";
 
 function App() {
   let states = ["Maharashtra", "Delhi", "UP", "MP", "Goa"];
+  let [products, setProducts] = useState(["apple", "banana", "pineapple"]);
 
   const [alertVisible, setAlertVisible] = useState(false);
 
@@ -45,6 +48,8 @@ function App() {
       <UpdateArray />
       <UpdateArrayOfObject />
       <UpdateArrayOfObjectWithImmer />
+      <NavBar cartItemCount={products.length} />
+      <Cart onClear={() => setProducts([])} items={products} />
     </>
   );
 }
