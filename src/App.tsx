@@ -10,6 +10,7 @@ import UpdateArrayOfObject from "./components/UpdateArrayOfObjects";
 import UpdateArrayOfObjectWithImmer from "./components/UpdateArrayOfObjectWithImmer";
 import NavBar from "./components/NavBar";
 import Cart from "./components/Cart";
+import ExpandableText from "./components/ExpandableText";
 
 function App() {
   let states = ["Maharashtra", "Delhi", "UP", "MP", "Goa"];
@@ -50,6 +51,12 @@ function App() {
       <UpdateArrayOfObjectWithImmer />
       <NavBar cartItemCount={products.length} />
       <Cart onClear={() => setProducts([])} items={products} />
+      <ExpandableText maxChar={10}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis
+        quam non ea minima cupiditate odio rerum ipsam mollitia molestiae.
+        Recusandae eius nam, aut consequatur tempore provident reiciendis unde
+        consectetur. Quod.
+      </ExpandableText>
     </>
   );
 }
