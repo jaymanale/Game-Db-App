@@ -11,6 +11,7 @@ import UpdateArrayOfObjectWithImmer from "./components/UpdateArrayOfObjectWithIm
 import NavBar from "./components/NavBar";
 import Cart from "./components/Cart";
 import ExpandableText from "./components/ExpandableText";
+import Form from "./components/Form";
 
 function App() {
   let states = ["Maharashtra", "Delhi", "UP", "MP", "Goa"];
@@ -57,6 +58,7 @@ function App() {
         Recusandae eius nam, aut consequatur tempore provident reiciendis unde
         consectetur. Quod.
       </ExpandableText>
+      <Form />
     </>
   );
 }
