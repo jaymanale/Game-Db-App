@@ -1,68 +1,30 @@
+import ExpenseTrackerForm from "./components/expenseTracker/components/ExpenseTrackerForm";
+import ExpenseList from "./components/expenseTracker/components/ExpenseList";
 import { useState } from "react";
-import Alert from "./components/Alert";
-import Button from "./components/Button";
-import ListGroup from "./components/ListGroup";
-import Like from "./components/Like";
-import ReactState from "./components/ReactState";
-import UpdateState from "./components/UpdateStates";
-import UpdateArray from "./components/UpdateArray";
-import UpdateArrayOfObject from "./components/UpdateArrayOfObjects";
-import UpdateArrayOfObjectWithImmer from "./components/UpdateArrayOfObjectWithImmer";
-import NavBar from "./components/NavBar";
-import Cart from "./components/Cart";
-import ExpandableText from "./components/ExpandableText";
-import FormWithUseRef from "./components/FormWithUseRef";
-import FormWithOnChangeEvent from "./components/FormWithOnChangeEvent";
-import FormWithReactHookForm from "./components/FormWithReactHookForm";
 
 function App() {
-  let states = ["Maharashtra", "Delhi", "UP", "MP", "Goa"];
-  let [products, setProducts] = useState(["apple", "banana", "pineapple"]);
+  const [expenses, setExpenses] = useState([
+    {
+      id: 1,
+      description: "Apple",
+      amount: 20,
+      category: "grocery",
+    },
+    {
+      id: 2,
+      description: "John Wick",
+      amount: 200,
+      category: "Entertainment",
+    },
+  ]);
 
-  const [alertVisible, setAlertVisible] = useState(false);
-
-  const handleSelectedItem = (item: string) => {
-    console.log(item);
-  };
-
-  const handleHideAlert = () => {
-    setAlertVisible(!alertVisible);
+  const handleDelete = (id: number) => {
+    setExpenses(expenses.filter((expense) => expense.id != id));
   };
 
   return (
     <>
-      <div>
-        <ListGroup
-          items={states}
-          heading="States"
-          onSelectItem={handleSelectedItem}
-        />
-      </div>
-      {alertVisible && (
-        <Alert onClose={handleHideAlert}>
-          <strong>Holy guacamole!</strong> You should check in on some of those
-          fields below.
-        </Alert>
-      )}
-
-      <Button onButtonClick={handleHideAlert} heading="Click Me" />
-      <Like initialState={false} onLikeClick={() => console.log("Clicked")} />
-      <ReactState />
-      <UpdateState />
-      <UpdateArray />
-      <UpdateArrayOfObject />
-      <UpdateArrayOfObjectWithImmer />
-      <NavBar cartItemCount={products.length} />
-      <Cart onClear={() => setProducts([])} items={products} />
-      <ExpandableText maxChar={10}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis
-        quam non ea minima cupiditate odio rerum ipsam mollitia molestiae.
-        Recusandae eius nam, aut consequatur tempore provident reiciendis unde
-        consectetur. Quod.
-      </ExpandableText>
-      <FormWithUseRef />
-      <FormWithOnChangeEvent />
-      <FormWithReactHookForm />
+      <ExpenseList expenses={expenses} onDelete={handleDelete} />
     </>
   );
 }
