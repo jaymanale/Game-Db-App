@@ -21,6 +21,7 @@ const FormWithOnChangeEvent = () => {
           onChange={(event) =>
             setPerson({ ...person, name: event.target.value })
           }
+          value={person.name}
           id="name"
           type="text"
           className="form-control"
@@ -34,6 +35,7 @@ const FormWithOnChangeEvent = () => {
           onChange={(event) =>
             setPerson({ ...person, age: event.target.value })
           }
+          value={person.age}
           id="age"
           type="number"
           className="form-control"
