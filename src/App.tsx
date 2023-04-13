@@ -13,6 +13,7 @@ import Cart from "./components/Cart";
 import ExpandableText from "./components/ExpandableText";
 import FormWithUseRef from "./components/FormWithUseRef";
 import FormWithOnChangeEvent from "./components/FormWithOnChangeEvent";
+import FormWithReactHookForm from "./components/FormWithReactHookForm";
 
 function App() {
   let states = ["Maharashtra", "Delhi", "UP", "MP", "Goa"];
@@ -61,6 +62,7 @@ function App() {
       </ExpandableText>
       <FormWithUseRef />
       <FormWithOnChangeEvent />
+      <FormWithReactHookForm />
     </>
   );
 }
