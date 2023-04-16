@@ -1,23 +1,31 @@
 import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { categories } from "../../../App";
+
+interface Props {
+  onSubmit: (expense: FormData) => void;
+}
 interface FormData {
   description: string;
   amount: number;
+  category: string;
 }
 
-const ExpenseTrackerForm = () => {
+const ExpenseTrackerForm = ({ onSubmit }: Props) => {
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
 
-  const handleOnFormSubmit = (data: FieldValues) => {
-    console.log(data);
-  };
   return (
-    <form onSubmit={handleSubmit(handleOnFormSubmit)}>
+    <form
+      onSubmit={handleSubmit((data) => {
+        onSubmit(data);
+        reset();
+      })}
+    >
       <div className="mb-3">
         <label htmlFor="description" className="form-label">
           Description
@@ -55,7 +63,11 @@ const ExpenseTrackerForm = () => {
         <label htmlFor="category" className="form-label">
           Category
         </label>
-        <select name="category" id="" className="form-select">
+        <select
+          id="category"
+          {...register("category", { required: true })}
+          className="form-select"
+        >
           <option value="">All category</option>
           {categories &&
             categories.map((category) => (

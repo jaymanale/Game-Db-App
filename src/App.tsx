@@ -39,7 +39,19 @@ function App() {
   return (
     <>
       <div className="mb-5">
-        <ExpenseTrackerForm />
+        <ExpenseTrackerForm
+          onSubmit={(expense) => {
+            console.log(expense);
+            setExpenses([
+              ...expenses,
+              {
+                ...expense,
+                amount: parseInt(expense.amount.toString()),
+                id: expenses.length + 1,
+              },
+            ]);
+          }}
+        />
       </div>
       <ExpenseFilter
         onSelectCategory={(category) => setSelectedCategory(category)}
