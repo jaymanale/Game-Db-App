@@ -1,6 +1,6 @@
 import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
-
+import { categories } from "../../../App";
 interface FormData {
   description: string;
   amount: number;
@@ -26,6 +26,7 @@ const ExpenseTrackerForm = () => {
           {...register("description", { required: true, minLength: 3 })}
           id="description"
           type="text"
+          placeholder="apple"
           className="form-control"
         />
         {errors.description?.type === "required" && (
@@ -43,38 +44,26 @@ const ExpenseTrackerForm = () => {
           {...register("amount", { required: true })}
           id="amount"
           type="number"
+          placeholder="50"
           className="form-control"
         />
         {errors.amount?.type === "required" && (
           <p className="text-danger">The amount field is required.</p>
         )}
       </div>
-      <div className="dropdown">
-        <button
-          className="btn btn-secondary dropdown-toggle"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          Dropdown button
-        </button>
-        <ul className="dropdown-menu">
-          <li>
-            <a className="dropdown-item" href="#">
-              Action
-            </a>
-          </li>
-          <li>
-            <a className="dropdown-item" href="#">
-              Another action
-            </a>
-          </li>
-          <li>
-            <a className="dropdown-item" href="#">
-              Something else here
-            </a>
-          </li>
-        </ul>
+      <div className="mb-3">
+        <label htmlFor="category" className="form-label">
+          Category
+        </label>
+        <select name="category" id="" className="form-select">
+          <option value="">All category</option>
+          {categories &&
+            categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+        </select>
       </div>
       <button className="btn btn-primary" type="submit">
         submit

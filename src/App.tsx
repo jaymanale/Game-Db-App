@@ -1,6 +1,9 @@
 import ExpenseTrackerForm from "./components/expenseTracker/components/ExpenseTrackerForm";
 import ExpenseList from "./components/expenseTracker/components/ExpenseList";
 import { useState } from "react";
+import ExpenseFilter from "./components/expenseTracker/components/ExpenseFilter";
+
+export const categories = ["Grocery", "Entertainment", "Utilities"];
 
 function App() {
   const [expenses, setExpenses] = useState([
@@ -8,7 +11,7 @@ function App() {
       id: 1,
       description: "Apple",
       amount: 20,
-      category: "grocery",
+      category: "Grocery",
     },
     {
       id: 2,
@@ -16,15 +19,32 @@ function App() {
       amount: 200,
       category: "Entertainment",
     },
+    {
+      id: 3,
+      description: "Light Bill",
+      amount: 1200,
+      category: "Utilities",
+    },
   ]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleDelete = (id: number) => {
     setExpenses(expenses.filter((expense) => expense.id != id));
   };
 
+  const visibleExpenses = selectedCategory
+    ? expenses.filter((expense) => expense.category === selectedCategory)
+    : expenses;
+
   return (
     <>
-      <ExpenseList expenses={expenses} onDelete={handleDelete} />
+      <div className="mb-5">
+        <ExpenseTrackerForm />
+      </div>
+      <ExpenseFilter
+        onSelectCategory={(category) => setSelectedCategory(category)}
+      />
+      <ExpenseList expenses={visibleExpenses} onDelete={handleDelete} />
     </>
   );
 }
