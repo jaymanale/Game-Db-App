@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import UseEffectExplain from "./UseEffectExplain";
 import ProductsLists from "./ProductsLists";
+import FetchUsersWithAxios from "./FetchUsersWithAxios";
 
 const UseEffectsMain = () => {
   const [category, setCategory] = useState("");
@@ -16,6 +17,7 @@ const UseEffectsMain = () => {
       </select>
       {category}
       <ProductsLists category={category} />
+      <FetchUsersWithAxios />
     </>
   );
 };
