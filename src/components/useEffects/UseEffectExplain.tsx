@@ -6,7 +6,7 @@ const UseEffectExplain = () => {
   useEffect(() => {
     // side effect, that need to b run after rendering the component
     if (inputRef.current) inputRef.current.focus();
-    document.title = "Mu APP";
+    document.title = "My APP";
   });
 
   return (
