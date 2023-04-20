@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 interface User {
   id: number;
@@ -10,10 +10,20 @@ const FetchUsersWithAxios = () => {
   const [errors, setErrors] = useState("");
 
   useEffect(() => {
-    axios
-      .get<User[]>("https://jsonplaceholder.typicode.com/xusers")
-      .then((response) => setUsers(response.data))
-      .catch((error) => setErrors(error.message));
+    const fetchUsers = async () => {
+      try {
+        console.log("before call");
+        const response = await axios.get<User[]>(
+          "https://jsonplaceholder.typicode.com/users"
+        );
+        console.log("after all", response);
+        setUsers(response.data);
+      } catch (error) {
+        console.log(error);
+        setErrors((error as AxiosError).message);
+      }
+    };
+    fetchUsers();
   }, []);
   return (
     <>
