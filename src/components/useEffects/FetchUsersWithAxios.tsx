@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, CanceledError } from "axios";
 
 interface User {
   id: number;
@@ -8,30 +8,73 @@ interface User {
 const FetchUsersWithAxios = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [errors, setErrors] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
+    const controller = new AbortController();
+    setLoading(true);
     const fetchUsers = async () => {
       try {
-        console.log("before call");
         const response = await axios.get<User[]>(
-          "https://jsonplaceholder.typicode.com/users"
+          "https://jsonplaceholder.typicode.com/users",
+          { signal: controller.signal }
         );
-        console.log("after all", response);
+
         setUsers(response.data);
+        setLoading(false);
       } catch (error) {
-        console.log(error);
+        if (error instanceof CanceledError) return;
+
         setErrors((error as AxiosError).message);
+        setLoading(false);
       }
+      // Use Below logic for production, As this does not work in development mode as strict mode is active
+      //   finally(() => {
+      //     setLoading(false);
+      //   })
     };
     fetchUsers();
+
+    // clean up function, If we no longer need to wait for this calls response
+    return () => controller.abort();
   }, []);
+
+  const deleteUser = (user: User) => {
+    // Bake backup of original state , if server calls fails then we can restore it
+    const originalUsers = [...users];
+
+    // Optimistic operation which will improvement user experience
+    setUsers(users.filter((u) => u.id !== user.id));
+
+    // Make actual call to server to make update
+    axios
+      .delete("https://jsonplaceholder.typicode.com/users/" + user.id)
+      .catch((error) => {
+        setErrors(error.message);
+        setUsers(originalUsers);
+      });
+  };
+
   return (
     <>
       {errors && <p className="text-danger">{errors}</p>}
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>{user.name}</li>
-        ))}
+      {isLoading && <div className="spinner-border"></div>}
+      <ul className="list-group">
+        {users &&
+          users.map((user) => (
+            <li
+              className="list-group-item d-flex justify-content-between"
+              key={user.id}
+            >
+              {user.name}
+              <button
+                className="btn btn-outline-danger"
+                onClick={() => deleteUser(user)}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
       </ul>
     </>
   );
