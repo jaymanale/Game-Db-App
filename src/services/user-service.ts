@@ -22,7 +22,7 @@ class UserService {
     return apiClient.delete("/users/" + id);
   }
 
-  // #3 : Add User
+  // #3 : ADD USER
   addUser(newUser: User) {
     return apiClient.post("/users", newUser);
   }

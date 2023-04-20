@@ -1,32 +1,10 @@
-import React, { useEffect, useState } from "react";
-
-import { CanceledError, AxiosError } from "../../services/api-client";
 import UserService, { User } from "../../services/user-service";
 import userService from "../../services/user-service";
+import useUsers from "../../hooks/useUsers";
 
 const FetchUsersWithAxios = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [errors, setErrors] = useState("");
-  const [isLoading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-
-    const { request, cancel } = UserService.getAllUsers();
-    request
-      .then((response) => {
-        setUsers(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        if (error instanceof CanceledError) return;
-        setErrors((error as AxiosError).message);
-        setLoading(false);
-      });
-
-    // clean up function, If we no longer need to wait for this calls response
-    return () => cancel();
-  }, []);
+  // get all users using custom hook which is reusable
+  const { users, errors, isLoading, setUsers, setErrors } = useUsers();
 
   const deleteUser = (user: User) => {
     // Bake backup of original state , if server calls fails then we can restore it
