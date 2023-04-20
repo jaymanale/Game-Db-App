@@ -15,7 +15,6 @@ const UseEffectsMain = () => {
         <option value="Clothing">CLothing</option>
         <option value="Household">Household</option>
       </select>
-      {category}
       <ProductsLists category={category} />
       <FetchUsersWithAxios />
     </>

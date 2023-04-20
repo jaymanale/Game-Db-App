@@ -10,7 +10,7 @@ const ProductsLists = ({ category }: Props) => {
   useEffect(() => {
     console.log("fetching products in " + category);
   }, [category]); // If there is no dependency then to render only once we pass empty array []
-  return <div>ProductsLists</div>;
+  return <div></div>;
 };
 
 export default ProductsLists;

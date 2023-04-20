@@ -51,22 +51,49 @@ const FetchUsersWithAxios = () => {
       .delete("https://jsonplaceholder.typicode.com/users/" + user.id)
       .catch((error) => {
         setErrors(error.message);
-        setUsers(originalUsers);
+        setUsers(originalUsers); // If any error restore state to original
       });
   };
 
   const addUser = () => {
+    // Bake backup of original state , if server calls fails then we can restore it
     const originalUsers = [...users];
 
+    // Mocked user object, in production ,it will come from form input
     const newUser = { id: 0, name: "jayram" };
+
+    // Optimistic operation which will improvement user experience
     setUsers([newUser, ...users]);
 
+    // Make actual call to server to add user
     axios
       .post("https://jsonplaceholder.typicode.com/users", newUser)
       .then(({ data: savedUser }) => setUsers([savedUser, ...users]))
       .catch((error) => {
         setErrors(error.message);
-        setUsers(originalUsers);
+        setUsers(originalUsers); // If any error restore state to original
+      });
+  };
+
+  const updateUser = (user: User) => {
+    // Bake backup of original state , if server calls fails then we can restore it
+    const originalUser = [...users];
+
+    // Mocked user object, in production ,it will come from form input
+    const updatedUser = { ...user, name: user.name + " updated " };
+
+    // Optimistic operation which will improvement user experience
+    setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
+
+    // Make actual call to server to make update
+    axios
+      .patch(
+        "https://jsonplaceholder.typicode.com/users/" + user.id,
+        updatedUser
+      )
+      .catch((error) => {
+        setErrors(error.message);
+        setUsers(originalUser); // If any error restore state to original
       });
   };
 
@@ -74,7 +101,7 @@ const FetchUsersWithAxios = () => {
     <>
       {errors && <p className="text-danger">{errors}</p>}
       {isLoading && <div className="spinner-border"></div>}
-      <button className="btn btn-primary" onClick={addUser}>
+      <button className="btn btn-primary my-2" onClick={addUser}>
         Add User
       </button>
       <ul className="list-group">
@@ -85,12 +112,20 @@ const FetchUsersWithAxios = () => {
               key={user.id}
             >
               {user.name}
-              <button
-                className="btn btn-outline-danger"
-                onClick={() => deleteUser(user)}
-              >
-                Delete
-              </button>
+              <div>
+                <button
+                  className="btn btn-outline-secondary mx-2"
+                  onClick={() => updateUser(user)}
+                >
+                  Update
+                </button>
+                <button
+                  className="btn btn-outline-danger"
+                  onClick={() => deleteUser(user)}
+                >
+                  Delete
+                </button>
+              </div>
             </li>
           ))}
       </ul>
