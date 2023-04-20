@@ -55,10 +55,28 @@ const FetchUsersWithAxios = () => {
       });
   };
 
+  const addUser = () => {
+    const originalUsers = [...users];
+
+    const newUser = { id: 0, name: "jayram" };
+    setUsers([newUser, ...users]);
+
+    axios
+      .post("https://jsonplaceholder.typicode.com/users", newUser)
+      .then(({ data: savedUser }) => setUsers([savedUser, ...users]))
+      .catch((error) => {
+        setErrors(error.message);
+        setUsers(originalUsers);
+      });
+  };
+
   return (
     <>
       {errors && <p className="text-danger">{errors}</p>}
       {isLoading && <div className="spinner-border"></div>}
+      <button className="btn btn-primary" onClick={addUser}>
+        Add User
+      </button>
       <ul className="list-group">
         {users &&
           users.map((user) => (
