@@ -1,45 +1,31 @@
 import React, { useEffect, useState } from "react";
 
-import apiClient, {
-  CanceledError,
-  AxiosError,
-} from "../../services/api-client";
+import { CanceledError, AxiosError } from "../../services/api-client";
+import UserService, { User } from "../../services/user-service";
+import userService from "../../services/user-service";
 
-interface User {
-  id: number;
-  name: string;
-}
 const FetchUsersWithAxios = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [errors, setErrors] = useState("");
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    const controller = new AbortController();
     setLoading(true);
-    const fetchUsers = async () => {
-      try {
-        const response = await apiClient.get<User[]>("/users", {
-          signal: controller.signal,
-        });
 
+    const { request, cancel } = UserService.getAllUsers();
+    request
+      .then((response) => {
         setUsers(response.data);
         setLoading(false);
-      } catch (error) {
+      })
+      .catch((error) => {
         if (error instanceof CanceledError) return;
-
         setErrors((error as AxiosError).message);
         setLoading(false);
-      }
-      // Use Below logic for production, As this does not work in development mode as strict mode is active
-      //   finally(() => {
-      //     setLoading(false);
-      //   })
-    };
-    fetchUsers();
+      });
 
     // clean up function, If we no longer need to wait for this calls response
-    return () => controller.abort();
+    return () => cancel();
   }, []);
 
   const deleteUser = (user: User) => {
@@ -50,7 +36,7 @@ const FetchUsersWithAxios = () => {
     setUsers(users.filter((u) => u.id !== user.id));
 
     // Make actual call to server to make update
-    apiClient.delete("/users/" + user.id).catch((error) => {
+    userService.deleteUser(user.id).catch((error) => {
       setErrors(error.message);
       setUsers(originalUsers); // If any error restore state to original
     });
@@ -67,8 +53,8 @@ const FetchUsersWithAxios = () => {
     setUsers([newUser, ...users]);
 
     // Make actual call to server to add user
-    apiClient
-      .post("/users", newUser)
+    userService
+      .addUser(newUser)
       .then(({ data: savedUser }) => setUsers([savedUser, ...users]))
       .catch((error) => {
         setErrors(error.message);
@@ -87,7 +73,7 @@ const FetchUsersWithAxios = () => {
     setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
 
     // Make actual call to server to make update
-    apiClient.patch("/users/" + user.id, updatedUser).catch((error) => {
+    userService.updateUser(user.id, updatedUser).catch((error) => {
       setErrors(error.message);
       setUsers(originalUser); // If any error restore state to original
     });
